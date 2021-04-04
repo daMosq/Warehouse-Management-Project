@@ -1,0 +1,23 @@
+.title {
+	font-weight: bold;
+	color: grey;
+	font-size: 1.5em;
+}
+
+.value {
+	font-size: 2em;
+}
+
+.container {
+	padding-left: 1em;
+	display: flex;
+	flex-direction: column;
+	align-items: left;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-evenly;
+}
