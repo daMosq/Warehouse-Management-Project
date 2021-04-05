@@ -9,7 +9,7 @@ const EditableText = (props) => {
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       setIsEditing(false)
-      alert('Enter')
+      //alert('Enter')
       
       props.onInputChange(event)
     }

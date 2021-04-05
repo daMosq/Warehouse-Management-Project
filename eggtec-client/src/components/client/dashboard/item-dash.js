@@ -7,7 +7,7 @@ import Container from 'react-bootstrap/Container';
 import Table from '../../shared/react-table/react-table'
 import Row from 'react-bootstrap/Row';
 import Modal from '../item-crud/create-item';
-import Modaldelete from '../item-crud/delete-item';
+//import Modaldelete from '../item-crud/delete-item';
 //import Modal from '../item-crud/delete-item';
 
 
@@ -107,14 +107,13 @@ class ItemDashboard extends Component {
                         <Col md="6">
                         </Col>
                     </Row> */}
-
+              
                 <Button variant="primary" onClick={this.showModal}>
                 Add Item
                 </Button>
                 <Modal show={this.state.showModal} refreshItems={this.getItemsData} onClose={this.hideModal} />
-                <Button variant="secondary" onClick={this.showModal}>
-                Delete Item
-                </Button>
+                
+                
                 {/* <Modal show={this.state.showModal} onClose={this.hideModal}/> */}
                 </Container>
                 

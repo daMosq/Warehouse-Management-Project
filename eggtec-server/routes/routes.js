@@ -8,6 +8,7 @@ const itemController = require('../controllers/itemController');
 const UserController = require('../controllers/UserController');
 const TruckController = require('../controllers/TruckController');
 const TrailerController = require('../controllers/TrailerController');
+const OrderController = require('../controllers/OrderController');
 
 
 // CRUD operations + routes
@@ -117,5 +118,12 @@ app.put('/trailer/:id', TrailerController.updateTrailer)
 app.delete('/trailer/:id', TrailerController.deleteTrailer)
 app.get('/trailer/:id', TrailerController.getTrailerById)
 app.get('/trailers', TrailerController.getTrailers)
+
+// routes for orders
+app.post('/order', OrderController.createOrder)
+app.put('/order/:id', OrderController.updateOrder)
+app.delete('/order/:id', OrderController.deleteOrder)
+app.get('/order/:id', OrderController.getOrderById)
+app.get('/orders', OrderController.getOrders)
 
 module.exports = app;

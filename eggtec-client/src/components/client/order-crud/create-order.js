@@ -1,14 +1,15 @@
-import React, { Componen, useState, setState } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-const CreateItem = (props) => {
-    const [name, setname] = useState('');
-    const [availability, setavailability] = useState('')
+const CreateOrder = (props) => {
+    const [itemName, setitemName] = useState('');
+    const [availability, setavailability] = useState('');
     const [amount, setamount] = useState('');
-    const [itemID, setitemID] = useState('')
+    const [itemID, setitemID] = useState('');
+    
 
-    const changeName = event => setname(event.target.value)
+    const changeItemName = event => setitemName(event.target.value)
 
     const changeAvailability = event => setavailability(event.target.value)
 
@@ -17,27 +18,29 @@ const CreateItem = (props) => {
     const changeItemID = event => setitemID(event.target.value)
 
     const onSubmit = event => {
+        event.preventDefault()
         // make new item
-        const newItem = {
-            name,
+        const newOrder = {
+            itemName,
             availability, 
             amount,
             itemID
         }
 
         // send to server
-        axios.post('http://localhost:4000/item', newItem)
-        .then(res => console.log(res.data))
+        axios.post('http://localhost:4000/order', newOrder, { headers: { Authentication: localStorage.getItem('auth') } })
+        .then(res => {
+            console.log(res.data)
+            setitemName('')
+            setavailability('')
+            setamount('')
+            setitemID(0)
+            props.onClose()
+            props.refreshOrders()
+        });
 
-        // clear state? unsure
-        setState({
-            name: '',
-            availability: '',
-            amount: 0,
-            itemID: 0
-        })
     }
-
+    // need useEffect?
 
     return (
     < Modal show={props.show} onHide={props.onClose} >
@@ -48,11 +51,11 @@ const CreateItem = (props) => {
             <div className='container form-div d-flex justify-content-center'>
                 <form onSubmit={onSubmit}>
                     <div className="form-group">
-                        <label>Name: </label>
+                        <label>Item Name: </label>
                         <input type="text"
                             className="form-control"
-                            value={name}
-                            onChange={changeName}
+                            value={itemName}
+                            onChange={changeItemName}
                         />
                     </div>
                     <div className="form-group">
@@ -64,8 +67,8 @@ const CreateItem = (props) => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Amount: </label>
-                        <input type="number"
+                        <label>Amount Ordered: </label>
+                        <input type="text"
                             className="form-control"
                             value={amount}
                             onChange={changeAmount}
@@ -80,27 +83,6 @@ const CreateItem = (props) => {
                         />
                     </div>
                   
-                    <div className="form-group">
-                        <input type="submit" value="Create Item" className="btn btn-primary" />
-                        <input
-                            type="button" value="List" className="btn btn-danger"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                //window.location.href = '/dashboard';
-                                //props.history.push('/items')
-                                //window.location.href = '/';
-                                //props.history.goBack()
-                                //props.history.replace('/items');
-                            }}
-                        /> 
-                        <input
-                            type="button" value="Cancel" className="btn btn-danger"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                //window.location.href = '/dashboard';
-                            }}
-                        /> 
-                    </div>
                 </form>
             </div>
             
@@ -109,7 +91,7 @@ const CreateItem = (props) => {
 				<Button variant="secondary" onClick={props.onClose}>
 					Close
 					</Button>
-				<Button variant="primary" onClick={() => console.log('submitted')}>
+				<Button variant="primary" onClick={onSubmit}>
 					Save Changes
 					</Button>
 			</Modal.Footer >
@@ -118,4 +100,4 @@ const CreateItem = (props) => {
 }
 
 
-export default CreateItem;
+export default CreateOrder;

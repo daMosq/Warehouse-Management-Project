@@ -33,7 +33,7 @@ const CreateItem = (props) => {
             console.log(res.data)
             setname('')
             setavailability('')
-            setamount(0)
+            setamount('')
             setitemID(0)
             props.onClose()
             props.refreshItems()
@@ -68,7 +68,7 @@ const CreateItem = (props) => {
                     </div>
                     <div className="form-group">
                         <label>Amount: </label>
-                        <input type="number"
+                        <input type="text"
                             className="form-control"
                             value={amount}
                             onChange={changeAmount}

@@ -32,8 +32,8 @@ class EmployeeDashboard extends Component {
     onEdit = (_id, rowIndex, column, newVal) => {
         const newData = [...this.state.mongoData]
         newData[rowIndex][column] = newVal
-        alert(JSON.stringify(newVal))
-        alert(JSON.stringify(newData[rowIndex]))
+        //alert(JSON.stringify(newVal))
+        //alert(JSON.stringify(newData[rowIndex]))
         const data = newData[rowIndex]
         axios.put('http://localhost:4000/user/' + data._id, data)
         

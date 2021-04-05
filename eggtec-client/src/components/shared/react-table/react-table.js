@@ -14,7 +14,7 @@ function Table({columns, data, ...props }) {
   
 
   const onInputChange = (_id, rowIndex, column) => (event) => {
-    alert(_id + rowIndex + column)
+    //alert(_id + rowIndex + column)
     props.onEdit(_id, rowIndex, column, event.target.value)
   }
 

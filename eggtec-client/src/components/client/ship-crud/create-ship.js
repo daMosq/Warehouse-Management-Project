@@ -1,4 +1,4 @@
-import React, { Componen, useState, setState } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 
@@ -7,6 +7,7 @@ const CreateItem = (props) => {
     const [availability, setavailability] = useState('')
     const [amount, setamount] = useState('');
     const [itemID, setitemID] = useState('')
+    
 
     const changeName = event => setname(event.target.value)
 
@@ -17,6 +18,7 @@ const CreateItem = (props) => {
     const changeItemID = event => setitemID(event.target.value)
 
     const onSubmit = event => {
+        event.preventDefault()
         // make new item
         const newItem = {
             name,
@@ -26,18 +28,19 @@ const CreateItem = (props) => {
         }
 
         // send to server
-        axios.post('http://localhost:4000/item', newItem)
-        .then(res => console.log(res.data))
+        axios.post('http://localhost:4000/item', newItem, { headers: { Authentication: localStorage.getItem('auth') } })
+        .then(res => {
+            console.log(res.data)
+            setname('')
+            setavailability('')
+            setamount(0)
+            setitemID(0)
+            props.onClose()
+            props.refreshItems()
+        });
 
-        // clear state? unsure
-        setState({
-            name: '',
-            availability: '',
-            amount: 0,
-            itemID: 0
-        })
     }
-
+    // need useEffect?
 
     return (
     < Modal show={props.show} onHide={props.onClose} >
@@ -80,27 +83,6 @@ const CreateItem = (props) => {
                         />
                     </div>
                   
-                    <div className="form-group">
-                        <input type="submit" value="Create Item" className="btn btn-primary" />
-                        <input
-                            type="button" value="List" className="btn btn-danger"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                //window.location.href = '/dashboard';
-                                //props.history.push('/items')
-                                //window.location.href = '/';
-                                //props.history.goBack()
-                                //props.history.replace('/items');
-                            }}
-                        /> 
-                        <input
-                            type="button" value="Cancel" className="btn btn-danger"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                //window.location.href = '/dashboard';
-                            }}
-                        /> 
-                    </div>
                 </form>
             </div>
             
@@ -109,7 +91,7 @@ const CreateItem = (props) => {
 				<Button variant="secondary" onClick={props.onClose}>
 					Close
 					</Button>
-				<Button variant="primary" onClick={() => console.log('submitted')}>
+				<Button variant="primary" onClick={onSubmit}>
 					Save Changes
 					</Button>
 			</Modal.Footer >
