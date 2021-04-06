@@ -1,18 +1,10 @@
 
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Col, Form, Button, Card } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import Modal from './update-profile';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-// import LoginNavBar from '../../shared/nav-bar/login-navbar';
-import Container from 'react-bootstrap/Container';
-// import Table from '../../shared/react-table/react-table'
-import Row from 'react-bootstrap/Row';
-
 import styles from './profile.module.css'
-
 class ProfilePage extends Component {
   constructor(props) {
     super(props)
@@ -71,29 +63,22 @@ class ProfilePage extends Component {
 
   render() {
     return (
-    <Card className="text-center" style={{width: '18rem'}}>
-      <div>
-        {/* <LoginNavBar /> */}
-        <Card.Header>
-        <h1 className="text-center" id='title'>Profile</h1>
-        </Card.Header>
-        <div className={styles.container}>
-          {this.state.titles.map(title => (
-            <div className={styles.row}>
-              <p className={styles.title}>{title}</p>
-              <p className={styles.value}>{this.state.profile[title]}</p>
-            </div >
-          ))}
-        </div >
-        <Button variant="primary" onClick={this.showModal}>
+      <div className={styles.container}>
+        <h1 className={styles.title}>Profile</h1>
+        <div className={styles.separator}></div>
+        {this.state.titles.map(title => (
+          <>
+            <p className={styles.subtitle}>{title}</p>
+            <p className={styles.value}>{this.state.profile[title]}</p>
+          </>
+        ))}
+        <Button variant="primary" className={styles.button} onClick={this.showModal}>
           Update Profile
-        </Button>
+          </Button>
         <Modal show={this.state.showModal} onClose={this.hideModal} />
       </div>
-      </Card>
     )
   }
-
 }
 
 export default ProfilePage;

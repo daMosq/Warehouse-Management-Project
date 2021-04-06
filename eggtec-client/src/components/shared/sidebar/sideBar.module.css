@@ -4,11 +4,38 @@
     height: 100%;
 }
 
-.sideBarContainer{
-
-    padding: 10px;
-    width: 10%;
+.sideBarContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    box-sizing: border-box;
+    min-width: 15vw;
     height: 100%;
-    background: #343333;
-    
+    background: #2A3143;
+}
+
+.marginRight {
+    margin-right: 0.5em;
+}
+
+.sideBarContainer a {
+    display: flex;
+    align-items: center;
+    transition: all 0.15s linear;
+    padding: 0.2em 0.5em;
+    margin: 0.1em 0;
+    border-radius: 2px;
+    color: #B6CEFF;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 1.2em;
+}
+
+.sideBarContainer a:hover, .selected {
+    background-color: #e1ebff;
+    color: #3598DC !important;
+}
+
+.selected {
+    font-weight: 600 !important;
 }

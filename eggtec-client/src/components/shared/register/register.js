@@ -1,9 +1,7 @@
-import { Redirect, Link } from "react-router-dom";
-import React, { Component, useState } from 'react';
+// import { Redirect, Link } from "react-router-dom";
+import React, { useState } from 'react';
 import axios from 'axios';
-
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import styles from './styles.module.css'
 
 const RegisterForm = (props) => {
     const [firstName, setFirstName] = useState('')
@@ -15,7 +13,7 @@ const RegisterForm = (props) => {
     const [error, seterror] = useState('')
 
     // changes state values 
-   
+
     const changeFirstName = event => setFirstName(event.target.value)
 
     const changeLastName = event => setlastName(event.target.value)
@@ -48,79 +46,73 @@ const RegisterForm = (props) => {
         axios.post('http://localhost:4000/register', registered)
             .then(res => {
                 console.log(res.data)
-                if(res.data.token){
+                if (res.data.token) {
                     localStorage.setItem('auth', res.data.token)
 
                     redirectToDashboard();
                 }
-                else{
+                else {
                     seterror('Invalid')
                 }
-        })
-
-
-
+            })
     }
-    const redirectToDashboard = () => {
 
+    const redirectToDashboard = () => {
         window.location.href = '/dashboard';
     }
 
     return (
-        <div>
+        <div className={styles.container}>
+            <form className={styles.form} onSubmit={onSubmit}>
+                <h1 className={styles.title}>Register New User</h1>
+                <div className={styles.row}>
+                    <input type='text'
+                        placeholder='First Name'
+                        onChange={changeFirstName}
+                        value={firstName}
+                        className='form-control' />
 
-            <h1 className='text-center'>Register New User</h1>
-            <div>
-                <div className='container form-div d-flex justify-content-center'>
-                    <form onSubmit={onSubmit}>
-                        <input type='text'
-                            placeholder='First Name'
-                            onChange={changeFirstName}
-                            value={firstName}
-                            className='form-control form-group' />
-
-                        <input type='text'
-                            placeholder='Last Name'
-                            onChange={changeLastName}
-                            value={lastName}
-                            className='form-control form-group' />
-
-                        <input type='number'
-                            placeholder='Phone Number'
-                            onChange={changePhoneNumber}
-                            value={phoneNumber}
-                            className='form-control form-group' />
-
-                        <input type='text'
-                            placeholder='E-mail'
-                            onChange={changeEmail}
-                            value={email}
-                            className='form-control form-group' />
-
-                        <input type='text'
-                            placeholder='Company'
-                            onChange={changeCompany}
-                            value={company}
-                            className='form-control form-group' />
-
-                        <input type='password'
-                            placeholder='Password'
-                            onChange={changePassword}
-                            value={password}
-                            className='form-control form-group' />
-
-                        <input type='submit' className='btn btn-primary btn-block'
-                            value='Submit' />
-                            <p>{error}</p>
-
-                        <div className='text-center'>
-                            <input type='checkbox' id='agree'
-                                onChange={checkboxHandler} />
-                            <label className='p-1' type='text'> I accept the terms & conditions </label>
-                        </div>
-                    </form>
+                    <input type='text'
+                        placeholder='Last Name'
+                        onChange={changeLastName}
+                        value={lastName}
+                        className='form-control' />
                 </div>
-            </div>
+
+                <input type='number'
+                    placeholder='Phone Number'
+                    onChange={changePhoneNumber}
+                    value={phoneNumber}
+                    className='form-control' />
+
+                <input type='text'
+                    placeholder='E-mail'
+                    onChange={changeEmail}
+                    value={email}
+                    className='form-control' />
+
+                <input type='text'
+                    placeholder='Company'
+                    onChange={changeCompany}
+                    value={company}
+                    className='form-control' />
+
+                <input type='password'
+                    placeholder='Password'
+                    onChange={changePassword}
+                    value={password}
+                    className='form-control' />
+                <div>
+                    <input type='checkbox' id='agree'
+                        onChange={checkboxHandler} />
+                    <label className='p-1' type='text'> I accept the terms & conditions </label>
+                </div>
+
+                <input type='submit' className='btn btn-primary btn-block'
+                    value='Submit' />
+                <p>{error}</p>
+
+            </form>
         </div>
 
     );

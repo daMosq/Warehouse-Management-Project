@@ -1,39 +1,25 @@
-import SideBarRouter from '../sidebar/sideBarRouter'
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
-import styles from './sideBar.module.css'
+import SideBarRouter from '../sidebar/sideBarRouter';
+import { BrowserRouter as Router, NavLink } from "react-router-dom";
+import styles from './sideBar.module.css';
 import LoginNavBar from '../nav-bar/login-navbar';
+import { FaUser, FaTruck, FaUserFriends, FaTruckLoading } from 'react-icons/fa'
+import { BsFillBagFill } from 'react-icons/bs'
+import { MdStorage } from 'react-icons/md'
 
 const SideBar = (props) => {
     return (
         <Router>
             <LoginNavBar />
             <div className={styles.container}>
-            <div className={styles.sideBarContainer} >
-                <ul style={{ listStyleType: "none", padding: 0 }}>
-                    <li>
-                        <Link to="/profile">Profile</Link>
-                    </li>
-                    <li>
-                        <Link to="/items">Inventory</Link>
-                    </li>
-                    <li>
-                        <Link to="/employees">Employees</Link>
-                    </li>
-                    <li>
-                        <Link to="/trucks">Trucks & Trailers</Link>
-                    </li>
-                    <li>
-                        <Link to="/orders">Orders</Link>
-                    </li>
-                    <li>
-                        <Link to="/ship">Shipment</Link>
-                    </li>
-                    
-
-                </ul>
-                
-            </div>
-            <SideBarRouter />
+                <div className={styles.sideBarContainer} >
+                    <NavLink activeClassName={styles.selected} to="/profile"><FaUser className={styles.marginRight} /> Profile</NavLink>
+                    <NavLink activeClassName={styles.selected} to="/items"><MdStorage className={styles.marginRight} />Inventory</NavLink>
+                    <NavLink activeClassName={styles.selected} to="/employees"><FaUserFriends className={styles.marginRight} /> Employees</NavLink>
+                    <NavLink activeClassName={styles.selected} to="/trucks"><FaTruck className={styles.marginRight} /> Trucks & Trailers</NavLink>
+                    <NavLink activeClassName={styles.selected} to="/orders"><BsFillBagFill className={styles.marginRight} /> Orders</NavLink>
+                    <NavLink activeClassName={styles.selected} to="/ship"><FaTruckLoading className={styles.marginRight} /> Shipment</NavLink>
+                </div>
+                <SideBarRouter />
             </div>
         </Router>
     )
