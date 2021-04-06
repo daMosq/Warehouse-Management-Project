@@ -1,2 +1,2 @@
-# Eggtec-Warehouse-Managment-Solution
+# Eggtec-Warehouse-Management
 For managing warehouses, obviously
