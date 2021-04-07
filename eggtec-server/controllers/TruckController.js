@@ -1,7 +1,7 @@
-// item controller
-// handles all item data base requests from client
+// Truck controller
+// handles all truck data base requests from client
 
-// Item table
+// Truck table
 const Truck = require('../models/TruckModel');
 
 // create truck
@@ -21,36 +21,36 @@ createTruck = async (req, res) => {
         })
     }
 
-    // make new item
+    // make new truck
     const truck = new Truck(body)
     console.log(truck);
 
-    // item created
+    // truck created
     if (!truck) {
         return res.status(400).json({ success: false, error: err })
     }
 
-    // save item in data base
+    // save truck in data base
     truck
         .save()
         .then(() => {
-            console.log("Item created");
+            console.log("Truck created");
             return res.status(201).json({
                 success: true,
                 id: truck._id,
-                message: 'Item created!',
+                message: 'Truck created!',
             })
         })
         .catch(error => {
-            console.log("Item not created!");
+            console.log("Truck not created!");
             return res.status(400).json({
                 error,
-                message: 'Item not created!',
+                message: 'Truck not created!',
             })
         })
 }
 
-// update item
+// update truck
 
 updateTruck = async (req, res) => {
 
@@ -78,9 +78,10 @@ updateTruck = async (req, res) => {
 
         // update existing truck
         truck.driverName = body.driverName
-        truck.route = body.route
+        truck.vehicleModel = body.vehicleModel
+        truck.licensePlate = body.licensePlate
         truck.status = body.status
-        truck.eta = body.eta
+        truck.estDelivery = body.estDelivery
 
 
         // update truck in data base
@@ -168,7 +169,7 @@ getTrucks = async (req, res) => {
             return res.status(400).json({ success: false, error: err })
         }
 
-        // no trailers in database
+        // no trucks in database
         if (!trucks.length) {
             return res
                 .status(404)

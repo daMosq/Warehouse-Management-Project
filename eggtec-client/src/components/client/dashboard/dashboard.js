@@ -10,9 +10,9 @@ import Row from 'react-bootstrap/Row';
 class EmployeeDashboard extends Component {
     constructor(props) {
         super(props)
-        let sessionUser = JSON.parse(window.sessionStorage.getItem("currentUser"))
+        //let sessionUser = JSON.parse(window.sessionStorage.getItem("currentUser"))
         this.state = {
-            currentUser: sessionUser,
+            //currentUser: sessionUser,
             // currentUserRole: sessionUser.role,
             loading: true,
             mongoData: [],
@@ -49,6 +49,19 @@ class EmployeeDashboard extends Component {
         
     }
 
+    deleteItem = (id) => {
+        console.log(id)
+        axios.delete('http://localhost:4000/user/' + id)
+        .then((res) => {
+            console.log(res)
+            //this.setState({loading: true})
+            //alert('Delete')
+            this.getRegisterData()
+            //this.forceUpdate()
+            //this.props.refreshItems()
+        })
+    }
+
 
     render() {
         let columns = [
@@ -83,7 +96,7 @@ class EmployeeDashboard extends Component {
                     </Row>
                     <div className="mx-5">
                         {/* this is the data table */}
-                        <Table columns={columns} data={this.state.mongoData} onEdit={this.onEdit} />
+                        <Table deleteItem={this.deleteItem} columns={columns} data={this.state.mongoData} onEdit={this.onEdit} />
                     </div>
                     {/* <Row className="justify-content-md-center">
                         <Col md="6">

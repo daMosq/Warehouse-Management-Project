@@ -16,12 +16,14 @@ class OrderDashboard extends Component {
         super(props)
         
         this.state = {
-            itemName: '',
-            itemID: '',
-            availability: '',
+            orderDate: '',
+            itemOrdered: '',
             amount: '',
+            orderStatus: '',
+            schedDelivery: '',
+            address: '',
             mongoData: [],
-            
+            loading: false,
             editedData: {} // gonna be sent to the backend to update the db
         }
     }
@@ -55,7 +57,7 @@ class OrderDashboard extends Component {
         
     }
 
-    deleteOrder = (id) => {
+    deleteItem = (id) => {
         console.log(id)
         axios.delete('http://localhost:4000/order/' + id)
         .then((res) => {
@@ -70,51 +72,52 @@ class OrderDashboard extends Component {
     render() {
         let columns = [
             {
-                Header: 'Item Name',
-                accessor: 'itemName', // accessor is the "key" in the data
+                Header: 'Order Date',
+                accessor: 'orderDate', // accessor is the "key" in the data
             },
             {
-                Header: 'Item ID',
-                accessor: 'itemID',
-            },
-            {
-                Header: 'Availability',
-                accessor: 'availability',
+                Header: 'Item Ordered',
+                accessor: 'itemOrdered',
             },
             {
                 Header: 'Amount Ordered',
-                accessor: 'amount'
+                accessor: 'amount',
+            },
+            {
+                Header: 'Order Status',
+                accessor: 'orderStatus'
+            },
+            {
+                Header: 'Scheduled Delivery',
+                accessor: 'schedDelivery'
+            },
+            {
+                Header: 'Destination Address',
+                accessor: 'address'
             }
     
 
         ];
-        let buttonLabel = '';
-        let redirectTo = '';
+        
 
         return (
             <div>
                 
                 <Container fluid>
                     <Row className="">
-                        {/* <label>{this.state.currentUser.role}</label> */}
                         <br />
                     </Row>
                     <div className="mx-5">
                         {/* this is the data table */}
-                        <Table deleteOrder={this.deleteOrder} columns={columns} data={this.state.mongoData} onEdit={this.onEdit} />
+                        <Table deleteItem={this.deleteItem} columns={columns} data={this.state.mongoData} onEdit={this.onEdit} />
                     </div>
-                    {/* <Row className="justify-content-md-center">
-                        <Col md="6">
-                        </Col>
-                    </Row> */}
+            
               
                 <Button variant="primary" onClick={this.showModal}>
                 Add Order
                 </Button>
                 <Modal show={this.state.showModal} refreshOrders={this.getOrdersData} onClose={this.hideModal} />
                 
-                
-                {/* <Modal show={this.state.showModal} onClose={this.hideModal}/> */}
                 </Container>
                 
             </div>

@@ -8,7 +8,7 @@ import styles from './profile.module.css'
 class ProfilePage extends Component {
   constructor(props) {
     super(props)
-    //let sessionUser = JSON.parse(window.sessionStorage.getItem("currentUser"))
+    let sessionUser = JSON.parse(window.sessionStorage.getItem("currentUser"))
     this.state = {
       profile: {
         ID: 1,

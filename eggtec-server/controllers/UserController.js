@@ -139,7 +139,7 @@ updateUser = async (req, res) => {
 deleteUser = async (req, res) => {
 
     // find and delete user from data base
-    await Book.findOneAndDelete({ _id: req.params.id }, (err, user) => {
+    await User.findOneAndDelete({ _id: req.params.id }, (err, user) => {
         if (err) {
 
             // database error

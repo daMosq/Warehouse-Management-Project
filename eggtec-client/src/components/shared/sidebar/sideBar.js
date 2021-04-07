@@ -17,7 +17,7 @@ const SideBar = (props) => {
                     <NavLink activeClassName={styles.selected} to="/employees"><FaUserFriends className={styles.marginRight} /> Employees</NavLink>
                     <NavLink activeClassName={styles.selected} to="/trucks"><FaTruck className={styles.marginRight} /> Trucks & Trailers</NavLink>
                     <NavLink activeClassName={styles.selected} to="/orders"><BsFillBagFill className={styles.marginRight} /> Orders</NavLink>
-                    <NavLink activeClassName={styles.selected} to="/ship"><FaTruckLoading className={styles.marginRight} /> Shipment</NavLink>
+                    <NavLink activeClassName={styles.selected} to="/ships"><FaTruckLoading className={styles.marginRight} /> Shipments</NavLink>
                 </div>
                 <SideBarRouter />
             </div>

@@ -78,10 +78,13 @@ updateTrailer = async (req, res) => {
         }
 
         // update existing trailer
-        trailer.trailerName = body.trailerName
-        trailer.trailerInfo = body.trailerInfo
-        trailer.trailerStatus = body.trailerStatus
-        trailer.trailerCheckedOut = body.trailerCheckedOut
+        trailer.trailerMake = body.trailerMake
+        trailer.trailerModel = body.trailerModel
+        trailer.bodyType = body.bodyType
+        trailer.trailerType = body.trailerType
+        trailer.mechStatus = body.mechStatus
+        trailer.maintenance = body.maintenance
+        
 
 
         // update trailer in data base

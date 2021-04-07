@@ -3,10 +3,12 @@ const Schema = mongoose.Schema
 
 const Trailer = new Schema(
     {
-        trailerName: {type: String, required: true},
-        trailerInfo: {type: String, required: true},
-        trailerStatus: {type: String, required: true},
-        trailerCheckedOut: {type: String, required: true}
+        trailerMake: {type: String, required: true},
+        trailerModel: {type: String, required: true},
+        bodyType: {type: String, required: true},
+        trailerType: {type: String, required: true},
+        mechStatus: {type: String, required: true},
+        maintenance: {type: String, required: true}
     },
     { timestamps: true},
     {collection: 'trailers'}

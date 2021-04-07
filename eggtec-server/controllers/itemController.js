@@ -78,10 +78,12 @@ updateItem = async (req, res) => {
         }
 
         // update existing item
-        item.name = body.name
-        item.availability = body.availability
-        item.amount = body.amount
+        item.itemName = body.itemName
         item.itemID = body.itemID
+        item.availability = body.availability
+        item.quantity = body.quantity
+        item.unitPrice = body.unitPrice
+        
 
 
         // update item in data base

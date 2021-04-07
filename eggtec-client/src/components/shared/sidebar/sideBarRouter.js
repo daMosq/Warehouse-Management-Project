@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-ro
 import ItemDashboard from '../../client/dashboard/item-dash';
 import TruckDashboard from '../../client/dashboard/truck-dash';
 import OrderDashboard from '../../client/dashboard/order-dash';
+import ShipmentDashboard from '../../client/dashboard/shipment-dash';
 
 const sideBarRouter = (props) => {
     return (
@@ -13,6 +14,7 @@ const sideBarRouter = (props) => {
             <Route path="/employees" component={EmployeeDashboard} />
             <Route path="/trucks" component={TruckDashboard} />
             <Route path="/orders" component={OrderDashboard} />
+            <Route path="/ships" component={ShipmentDashboard} />
         </Switch>
     )
 }

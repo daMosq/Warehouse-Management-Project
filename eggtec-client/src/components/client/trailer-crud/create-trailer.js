@@ -1,46 +1,57 @@
-import React, { Componen, useState, setState } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 const CreateTrailer = (props) => {
-    const [trailerName, settrailerName] = useState('');
-    const [trailerInfo, settrailerInfo] = useState('');
-    const [trailerStatus, settrailerStatus] = useState('');
-    const [trailerCheckedOut, settrailerCheckedOut] = useState('');
-    const [state, setState] = useState('');
+
+    const [trailerMake, settrailerMake] = useState('');
+    const [trailerModel, settrailerModel] = useState('');
+    const [bodyType, setbodyType] = useState('');
+    const [trailerType, settrailerType] = useState('');
+    const [mechStatus, setmechStatus] = useState('');
+    const [maintenance, setmaintenance] = useState('');
+
+    const changeTrailerMake = event => settrailerMake(event.target.value)
+
+    const changeTrailerModel = event => settrailerModel(event.target.value)
+
+    const changeBodyType = event => setbodyType(event.target.value)
+
+    const changeTrailerType = event => settrailerType(event.target.value)
+
+    const changeMechStatus = event => setmechStatus(event.target.value)
+
+    const changeMaintenance = event => setmaintenance(event.target.value)
     
-
-    const changeTrailerName = event => settrailerName(event.target.value)
-
-    const changeTrailerInfo = event => settrailerInfo(event.target.value)
-
-    const changetrailerStatus = event => settrailerStatus(event.target.value)
-
-    const changetrailerCheckedOut = event => settrailerCheckedOut(event.target.value)
-
     const onSubmit = event => {
         event.preventDefault()
-        // make new item
+        // make new trailer
         const newTrailer = {
-            trailerName,
-            trailerInfo, 
-            trailerStatus,
-            trailerCheckedOut
+            trailerMake,
+            trailerModel,
+            bodyType,
+            trailerType,
+            mechStatus,
+            maintenance
         }
 
         // send to server
-        axios.post('http://localhost:4000/trailer', newTrailer)
-        .then(res => console.log(res.data))
+        axios.post('http://localhost:4000/trailer', newTrailer, { headers: { Authentication: localStorage.getItem('auth') } })
+        .then(res => {
+            console.log(res.data)
+            settrailerMake('')
+            settrailerModel('')
+            setbodyType('')
+            settrailerType('')
+            setmechStatus('')
+            setmaintenance('')
 
-        // clear state? 
-        setState({
-            trailerName: '',
-            trailerInfo: '',
-            trailerStatus: '',
-            trailerCheckedOut: ''
-        })
+            props.onClose()
+            props.refreshTrailers()
+        });
+
     }
-
+    
 
     return (
     < Modal show={props.show} onHide={props.onClose} >
@@ -51,59 +62,54 @@ const CreateTrailer = (props) => {
             <div className='container form-div d-flex justify-content-center'>
                 <form onSubmit={onSubmit}>
                     <div className="form-group">
-                        <label>Trailer Name: </label>
+                        <label>Trailer Make: </label>
                         <input type="text"
                             className="form-control"
-                            value={trailerName}
-                            onChange={changeTrailerName}
+                            value={trailerMake}
+                            onChange={changeTrailerMake}
                         />
                     </div>
                     <div className="form-group">
-                        <label>Trailer Info: </label>
+                        <label>Trailer Model:  </label>
                         <input type="text"
                             className="form-control"
-                            value={trailerInfo}
-                            onChange={changeTrailerInfo}
+                            value={trailerModel}
+                            onChange={changeTrailerModel}
                         />
                     </div>
                     <div className="form-group">
-                        <label>Status: </label>
+                        <label>Body Type: </label>
                         <input type="text"
                             className="form-control"
-                            value={trailerStatus}
-                            onChange={changetrailerStatus}
+                            value={bodyType}
+                            onChange={changeBodyType}
                         />
                     </div>
                     <div className="form-group">
-                        <label>Checked Out: </label>
+                        <label>Trailer Type: </label>
                         <input type="text"
                             className="form-control"
-                            value={trailerCheckedOut}
-                            onChange={changetrailerCheckedOut}
+                            value={trailerType}
+                            onChange={changeTrailerType}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Mechanical Status: </label>
+                        <input type="text"
+                            className="form-control"
+                            value={mechStatus}
+                            onChange={changeMechStatus}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Next Maintenance: </label>
+                        <input type="text"
+                            className="form-control"
+                            value={maintenance}
+                            onChange={changeMaintenance}
                         />
                     </div>
                   
-                    <div className="form-group">
-                        <input type="submit" value="Create Trailer" className="btn btn-primary" />
-                        <input
-                            type="button" value="List" className="btn btn-danger"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                //window.location.href = '/dashboard';
-                                //props.history.push('/items')
-                                //window.location.href = '/';
-                                //props.history.goBack()
-                                //props.history.replace('/items');
-                            }}
-                        /> 
-                        <input
-                            type="button" value="Cancel" className="btn btn-danger"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                //window.location.href = '/dashboard';
-                            }}
-                        /> 
-                    </div>
                 </form>
             </div>
             
@@ -112,7 +118,7 @@ const CreateTrailer = (props) => {
 				<Button variant="secondary" onClick={props.onClose}>
 					Close
 					</Button>
-				<Button variant="primary" onClick={() => console.log('submitted')}>
+				<Button variant="primary" onClick={onSubmit}>
 					Save Changes
 					</Button>
 			</Modal.Footer >

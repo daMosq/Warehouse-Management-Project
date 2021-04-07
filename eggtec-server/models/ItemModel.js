@@ -3,10 +3,12 @@ const Schema = mongoose.Schema
 
 const Item = new Schema(
     {
-        name: {type: String, required: true},
+        itemName: {type: String, required: true},
+        itemID: {type: Number, required: true},
         availability: {type: String, required: true},
-        amount: {type: Number, required: true},
-        itemID: {type: Number, required: true}
+        quantity: {type: Number, required: true},
+        unitPrice : {type: String, required: true}
+        
     },
     { timestamps: true},
     {collection: 'items'}

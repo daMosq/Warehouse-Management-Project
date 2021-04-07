@@ -18,26 +18,33 @@ class TruckDashboard extends Component {
         super(props)
         
         this.state = {
+            // truck
             driverName: '',
-            route: '',
+            vehicleModel: '',
+            licensePlate: '',
             status: '',
-            eta: '',
-            trailerName: '',
-            trailerInfo: '',
-            trailerStatus: '',
-            trailerCheckedOut: '',
+            estDelivery: '',
+            // trailer
+            trailerMake: '',
+            trailerModel: '',
+            bodyType: '',
+            trailerType: '',
+            mechStatus: '',
+            maintenance: '',
+
             mongoData: [],
             moreMongoData: [],
-            editedData: {} // gonna be sent to the backend to update the db
+            editedData: {},
+            trailEditedData: {} // gonna be sent to the backend to update the db
         }
     }
 
-    async getTrucksData() {
+    getTrucksData = async () => {
         const truckRes = await axios.get('http://localhost:4000/trucks')
         this.setState({ loading: false, mongoData: truckRes.data.data })
     }
 
-    async getTrailersData() {
+    getTrailersData = async () => {
         const trailerRes = await axios.get('http://localhost:4000/trailers')
         this.setState({ loading: false, moreMongoData: trailerRes.data.data })
     }
@@ -53,14 +60,24 @@ class TruckDashboard extends Component {
         console.log(JSON.stringify(newVal))
         const data = newData[rowIndex]
         axios.put('http://localhost:4000/truck/' + data._id, data)
+
+        const trailerData = [...this.state.moreMongoData]
+        trailerData[rowIndex][column] = newVal
+        const trailData = trailerData[rowIndex]
+        axios.put('http://localhost:4000/trailer' + trailData._id, trailData)
         
         this.setState(
             {
                 mongoData: newData,
                 editedData: { ...this.state.editedData, [_id]: { ...this.state.editedData[_id], [column]: newVal } }
             },
+            {
+                moreMongoData: trailerData,
+                trailEditedData: {...this.state.trailEditedData, [_id]: {...this.state.trailEditedData[_id], [column]: newVal}}
+            },
             () => {
                 console.log(this.state.editedData)
+                console.log(this.state.trailEditedData)
             }
         )
         
@@ -68,6 +85,26 @@ class TruckDashboard extends Component {
     showModal = () => this.setState({ showModal: true });
     hideModal = () => this.setState({ showModal: false });
     // need another handler for second modal 
+    showTrailModal = () => this.setState({ showTrailModal: true});
+    hideTrailModal = () => this.setState({ showTrailModal: false});
+
+    deleteItem = (id) => {
+        console.log(id)
+        axios.delete('http://localhost:4000/truck/' + id)
+        .then((res) => {
+            console.log(res)
+            this.getTrucksData()
+        })
+    }
+
+    deleteTrailItem = (id) => {
+        console.log(id)
+        axios.delete('http://localhost:4000/trailer/' + id)
+        .then((res) => {
+            console.log(res)
+            this.getTrailersData()
+        })
+    }
 
     render() {
         let truckColumns = [
@@ -76,16 +113,20 @@ class TruckDashboard extends Component {
                 accessor: 'driverName', // accessor is the "key" in the data
             },
             {
-                Header: 'Route',
-                accessor: 'route',
+                Header: 'Vehicle Model',
+                accessor: 'vehicleModel',
+            },
+            {
+                Header: 'License Plate',
+                accessor: 'licensePlate',
             },
             {
                 Header: 'Status',
-                accessor: 'status',
+                accessor: 'status'
             },
             {
-                Header: 'ETA',
-                accessor: 'eta'
+                Header: 'Estimated Delivery',
+                accessor: 'estDelivery'
             }
     
 
@@ -93,64 +134,59 @@ class TruckDashboard extends Component {
 
         let trailerColumns = [
             {
-                Header: 'Trailer Name',
-                accessor: 'trailerName', // accessor is the "key" in the data
+                Header: 'Trailer Make',
+                accessor: 'trailerMake', // accessor is the "key" in the data
             },
             {
-                Header: 'Info',
-                accessor: 'trailerInfo',
+                Header: 'Trailer Model',
+                accessor: 'trailerModel',
             },
             {
-                Header: 'Status',
-                accessor: 'trailerStatus',
+                Header: 'Body Type',
+                accessor: 'bodyType',
             },
             {
-                Header: 'Checked Out By',
-                accessor: 'trailerCheckedOut'
+                Header: 'Trailer Type',
+                accessor: 'trailerType'
+            },
+            {
+                Header: 'Mechanical Status',
+                accessor: 'mechStatus'
+            },
+            {
+                Header: 'Next Maintenance',
+                accessor: 'maintenance'
             }
     
 
         ];
-
-
-        let buttonLabel = '';
-        let redirectTo = '';
 
         return (
             <div>
                 
                 <Container fluid>
                     <Row className="">
-                        {/* <label>{this.state.currentUser.role}</label> */}
+                       
                         <br />
                     </Row>
                     <div className="mx-5">
                         {/* this is the data table */}
-                        <Table columns={truckColumns} data={this.state.mongoData} onEdit={this.onEdit} />
+                        <Table deleteItem={this.deleteItem} columns={truckColumns} data={this.state.mongoData} onEdit={this.onEdit} />
                     </div>
                     <div className="mx-5">
                         {/* this is the other data table */}
-                        <Table columns={trailerColumns} data={this.state.moreMongoData} onEdit={this.onEdit} />
+                        <Table deleteItem={this.deleteTrailItem} columns={trailerColumns} data={this.state.moreMongoData} onEdit={this.onEdit} />
                     </div>
-                    {/* <Row className="justify-content-md-center">
-                        <Col md="6">
-                        </Col>
-                    </Row> */}
-                {/*
+                   
                 <Button variant="primary" onClick={this.showModal}>
                 Add Truck
                 </Button>
-                <Modal show={this.state.showModal} onClose={this.hideModal} />
-                <Button variant="secondary" onClick={this.showModal}>
-                Delete Truck
+                <Modal refreshTrucks={this.getTrucksData} show={this.state.showModal} onClose={this.hideModal} />
+
+                <Button variant="secondary" onClick={this.showTrailModal}>
+                Add Trailer
                 </Button>
-                <Modal show={this.state.showModal} onClose={this.hideModal}/>
-                
-                */ }
-                <Button variant="primary" onClick={this.showModal}>
-                Add Truck
-                </Button>
-                <Modal show={this.state.showModal} onClose={this.hideModal} />
+                <TrailerModal refreshTrailers={this.getTrailersData} show={this.state.showTrailModal} onClose={this.hideTrailModal} />
                 </Container>
             </div>
             

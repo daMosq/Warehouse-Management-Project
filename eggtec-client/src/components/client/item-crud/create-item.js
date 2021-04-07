@@ -3,38 +3,48 @@ import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 const CreateItem = (props) => {
-    const [name, setname] = useState('');
-    const [availability, setavailability] = useState('')
-    const [amount, setamount] = useState('');
+    const [itemName, setitemName] = useState('')
     const [itemID, setitemID] = useState('')
+    const [availability, setavailability] = useState('')
+    const [quantity, setquantity] = useState(''); 
+    const [unitPrice, setunitPrice] = useState('');
+    
     
 
-    const changeName = event => setname(event.target.value)
+    const changeitemName = event => setitemName(event.target.value)
+
+    const changeItemID = event => setitemID(event.target.value)
 
     const changeAvailability = event => setavailability(event.target.value)
 
-    const changeAmount = event => setamount(event.target.value)
+    const changeQuantity = event => setquantity(event.target.value)
 
-    const changeItemID = event => setitemID(event.target.value)
+    const changeUnitPrice = event => setunitPrice(event.target.value)
+
+    
 
     const onSubmit = event => {
         event.preventDefault()
         // make new item
         const newItem = {
-            name,
+            itemName,
+            itemID,
             availability, 
-            amount,
-            itemID
+            quantity,
+            unitPrice,
+            
         }
 
         // send to server
         axios.post('http://localhost:4000/item', newItem, { headers: { Authentication: localStorage.getItem('auth') } })
         .then(res => {
             console.log(res.data)
-            setname('')
-            setavailability('')
-            setamount('')
+            setitemName('')
             setitemID(0)
+            setavailability('')
+            setquantity(0)
+            setunitPrice('')
+            
             props.onClose()
             props.refreshItems()
         });
@@ -51,11 +61,19 @@ const CreateItem = (props) => {
             <div className='container form-div d-flex justify-content-center'>
                 <form onSubmit={onSubmit}>
                     <div className="form-group">
-                        <label>Name: </label>
+                        <label>Item Name: </label>
                         <input type="text"
                             className="form-control"
-                            value={name}
-                            onChange={changeName}
+                            value={itemName}
+                            onChange={changeitemName}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Item ID: </label>
+                        <input type="number"
+                            className="form-control"
+                            value={itemID}
+                            onChange={changeItemID}
                         />
                     </div>
                     <div className="form-group">
@@ -67,19 +85,19 @@ const CreateItem = (props) => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Amount: </label>
-                        <input type="text"
+                        <label>Quantity: </label>
+                        <input type="number"
                             className="form-control"
-                            value={amount}
-                            onChange={changeAmount}
+                            value={quantity}
+                            onChange={changeQuantity}
                         />
                     </div>
                     <div className="form-group">
-                        <label>Item ID: </label>
-                        <input type="number"
+                        <label>Unit Price: </label>
+                        <input type="text"
                             className="form-control"
-                            value={itemID}
-                            onChange={changeItemID}
+                            value={unitPrice}
+                            onChange={changeUnitPrice}
                         />
                     </div>
                   

@@ -7,8 +7,7 @@ import Container from 'react-bootstrap/Container';
 import Table from '../../shared/react-table/react-table'
 import Row from 'react-bootstrap/Row';
 import Modal from '../item-crud/create-item';
-//import Modaldelete from '../item-crud/delete-item';
-//import Modal from '../item-crud/delete-item';
+
 
 
 class ItemDashboard extends Component {
@@ -16,12 +15,14 @@ class ItemDashboard extends Component {
         super(props)
         
         this.state = {
-            name: '',
-            availability: '',
-            amount: 0,
+            itemName: '',
             itemID: 0,
-            mongoData: [],
+            availability: '',
+            quantity: 0,
+            unitPrice: '',
             
+            mongoData: [],
+            loading: false,
             editedData: {} // gonna be sent to the backend to update the db
         }
     }
@@ -30,12 +31,20 @@ class ItemDashboard extends Component {
         const itemRes = await axios.get('http://localhost:4000/items')
         this.setState({ loading: false, mongoData: itemRes.data.data })
         
+        
     }
 
     componentDidMount() {
         this.getItemsData()
     }
-
+/*
+    componentDidUpdate(){
+        if(this.state.loading == true){
+            this.getItemsData()
+        }
+        
+    }
+*/
     onEdit = (_id, rowIndex, column, newVal) => {
         const newData = [...this.state.mongoData]
         newData[rowIndex][column] = newVal
@@ -60,7 +69,11 @@ class ItemDashboard extends Component {
         axios.delete('http://localhost:4000/item/' + id)
         .then((res) => {
             console.log(res)
+            //this.setState({loading: true})
+            //alert('Delete')
             this.getItemsData()
+            //this.forceUpdate()
+            //this.props.refreshItems()
         })
     }
 
@@ -68,53 +81,51 @@ class ItemDashboard extends Component {
     hideModal = () => this.setState({ showModal: false });
 
     render() {
+        
         let columns = [
             {
                 Header: 'Item Name',
-                accessor: 'name', // accessor is the "key" in the data
+                accessor: 'itemName', // accessor is the "key" in the data
+            },
+            {
+                Header: 'Item ID',
+                accessor: 'itemID',
             },
             {
                 Header: 'Availability',
                 accessor: 'availability',
             },
             {
-                Header: 'Amount Ordered',
-                accessor: 'amount',
+                Header: 'Quantity',
+                accessor: 'quantity'
             },
             {
-                Header: 'Item ID',
-                accessor: 'itemID'
+                Header: 'Unit Price',
+                accessor: 'unitPrice'
             }
     
 
         ];
-        let buttonLabel = '';
-        let redirectTo = '';
+        
 
         return (
             <div>
                 
                 <Container fluid>
                     <Row className="">
-                        {/* <label>{this.state.currentUser.role}</label> */}
                         <br />
                     </Row>
                     <div className="mx-5">
                         {/* this is the data table */}
                         <Table deleteItem={this.deleteItem} columns={columns} data={this.state.mongoData} onEdit={this.onEdit} />
                     </div>
-                    {/* <Row className="justify-content-md-center">
-                        <Col md="6">
-                        </Col>
-                    </Row> */}
+                    
               
                 <Button variant="primary" onClick={this.showModal}>
                 Add Item
                 </Button>
                 <Modal show={this.state.showModal} refreshItems={this.getItemsData} onClose={this.hideModal} />
                 
-                
-                {/* <Modal show={this.state.showModal} onClose={this.hideModal}/> */}
                 </Container>
                 
             </div>

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-// import {connect} from 'react-redux';
-//import DefaultUserPic from "../uploads/team-male.jpg";
 import axios from 'axios';
-// import LoginNavBar from '../../shared/nav-bar/login-navbar';
+
 
 const UpdateProfile = (props) => {
 	const [firstName, setFirstName] = useState('')

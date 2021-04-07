@@ -9,6 +9,7 @@ const UserController = require('../controllers/UserController');
 const TruckController = require('../controllers/TruckController');
 const TrailerController = require('../controllers/TrailerController');
 const OrderController = require('../controllers/OrderController');
+const ShipController = require('../controllers/ShipController');
 
 
 // CRUD operations + routes
@@ -102,8 +103,11 @@ app.get('/item/:id', itemController.getItemById)
 app.get('/items', itemController.getItems)
 
 // routes for users
-app.get('/users', UserController.getUsers)
+
 app.put('/user/:id', UserController.updateUser)
+app.delete('/user/:id', UserController.deleteUser)
+app.get('/item/:id', UserController.getUserById)
+app.get('/users', UserController.getUsers)
 
 // routes for trucks
 app.post('/truck', TruckController.createTruck)
@@ -125,5 +129,12 @@ app.put('/order/:id', OrderController.updateOrder)
 app.delete('/order/:id', OrderController.deleteOrder)
 app.get('/order/:id', OrderController.getOrderById)
 app.get('/orders', OrderController.getOrders)
+
+// routes for shipments
+app.post('/ship', ShipController.createShip)
+app.put('/ship/:id', ShipController.updateShip)
+app.delete('/ship/:id', ShipController.deleteShip)
+app.get('/ship/:id', ShipController.getShipById)
+app.get('/ships', ShipController.getShips)
 
 module.exports = app;

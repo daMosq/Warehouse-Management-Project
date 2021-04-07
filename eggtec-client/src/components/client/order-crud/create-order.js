@@ -3,67 +3,79 @@ import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 const CreateOrder = (props) => {
-    const [itemName, setitemName] = useState('');
-    const [availability, setavailability] = useState('');
+    const [orderDate, setorderDate] = useState('');
+    const [itemOrdered, setitemOrdered] = useState('');
     const [amount, setamount] = useState('');
-    const [itemID, setitemID] = useState('');
+    const [orderStatus, setorderStatus] = useState('');
+    const [schedDelivery, setschedDelivery] = useState('');
+    const [address, setaddress] = useState('');
     
 
-    const changeItemName = event => setitemName(event.target.value)
+    const changeOrderDate = event => setorderDate(event.target.value)
 
-    const changeAvailability = event => setavailability(event.target.value)
+    const changeitemOrdered = event => setitemOrdered(event.target.value)
 
     const changeAmount = event => setamount(event.target.value)
 
-    const changeItemID = event => setitemID(event.target.value)
+    const changeOrderStatus = event => setorderStatus(event.target.value)
+
+    const changeSchedDelivery = event => setschedDelivery(event.target.value)
+
+    const changeAddress = event => setaddress(event.target.value)
 
     const onSubmit = event => {
         event.preventDefault()
         // make new item
         const newOrder = {
-            itemName,
-            availability, 
+            orderDate,
+            itemOrdered, 
             amount,
-            itemID
+            orderStatus,
+            schedDelivery,
+            address
+        
         }
 
         // send to server
         axios.post('http://localhost:4000/order', newOrder, { headers: { Authentication: localStorage.getItem('auth') } })
         .then(res => {
             console.log(res.data)
-            setitemName('')
-            setavailability('')
+            setorderDate('')
+            setitemOrdered('')
             setamount('')
-            setitemID(0)
+            setorderStatus('')
+            setschedDelivery('')
+            setaddress('')
+            
             props.onClose()
             props.refreshOrders()
         });
 
     }
-    // need useEffect?
+    
 
     return (
     < Modal show={props.show} onHide={props.onClose} >
         < Modal.Header closeButton>
-            <Modal.Title>Add Item</Modal.Title>
+            <Modal.Title>Add Order</Modal.Title>
             </Modal.Header>
             <Modal.Body>
             <div className='container form-div d-flex justify-content-center'>
                 <form onSubmit={onSubmit}>
                     <div className="form-group">
-                        <label>Item Name: </label>
+                        <label>Order Date: </label>
                         <input type="text"
                             className="form-control"
-                            value={itemName}
-                            onChange={changeItemName}
+                            value={orderDate}
+                            onChange={changeOrderDate}
                         />
                     </div>
                     <div className="form-group">
-                        <label>Availability: </label>
+                        <label>Item Ordered: </label>
                         <input type="text"
                             className="form-control"
-                            value={availability}
-                            onChange={changeAvailability}
+                            value={itemOrdered}
+                            onChange={changeitemOrdered}
                         />
                     </div>
                     <div className="form-group">
@@ -75,11 +87,27 @@ const CreateOrder = (props) => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Item ID: </label>
-                        <input type="number"
+                        <label>Order Status: </label>
+                        <input type="text"
                             className="form-control"
-                            value={itemID}
-                            onChange={changeItemID}
+                            value={orderStatus}
+                            onChange={changeOrderStatus}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Scheduled Delivery: </label>
+                        <input type="text"
+                            className="form-control"
+                            value={schedDelivery}
+                            onChange={changeSchedDelivery}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Destination Address: </label>
+                        <input type="text"
+                            className="form-control"
+                            value={address}
+                            onChange={changeAddress}
                         />
                     </div>
                   

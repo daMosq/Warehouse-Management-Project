@@ -78,10 +78,12 @@ updateOrder = async (req, res) => {
         }
 
         // update existing order
-        order.itemName = body.itemName
-        order.availability = body.availability
+        order.orderDate = body.orderDate
+        order.itemOrdered = body.itemOrdered
         order.amount = body.amount
-        order.itemID = body.itemID
+        order.orderStatus = body.orderStatus
+        order.schedDelivery = body.schedDelivery
+        order.address = body.address
 
 
         // update order in data base

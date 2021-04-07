@@ -1,47 +1,52 @@
-import React, { Componen, useState, setState } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 const CreateTruck = (props) => {
-    const [driverName, setdriverName] = useState('');
-    const [route, setroute] = useState('')
-    const [status, setstatus] = useState('')
-    const [eta, seteta] = useState('')
-    const [state, setState] = useState('')
-    
 
+    const [driverName, setdriverName] = useState('');
+    const [vehicleModel, setvehicleModel] = useState('');
+    const [licensePlate, setlicensePlate] = useState('');
+    const [status, setstatus] = useState('');
+    const [estDelivery, setestDelivery] = useState('');
+    
     const changeDriverName = event => setdriverName(event.target.value)
 
-    const changeRoute = event => setroute(event.target.value)
+    const changeVehicleModel = event => setvehicleModel(event.target.value)
+
+    const changeLicensePlate = event => setlicensePlate(event.target.value)
 
     const changeStatus = event => setstatus(event.target.value)
 
-    const changeEta = event => seteta(event.target.value)
-
+    const changeEstDelivery = event => setestDelivery(event.target.value)
+    
     const onSubmit = event => {
-        // make new truck
         event.preventDefault()
-
+        // make new truck
         const newTruck = {
             driverName,
-            route,
+            vehicleModel,
+            licensePlate,
             status,
-            eta
+            estDelivery
         }
 
         // send to server
-        axios.post('http://localhost:4000/truck', newTruck)
-        .then(res => console.log(res.data))
+        axios.post('http://localhost:4000/truck', newTruck, { headers: { Authentication: localStorage.getItem('auth') } })
+        .then(res => {
+            console.log(res.data)
+            setdriverName('')
+            setvehicleModel('')
+            setlicensePlate('')
+            setstatus('')
+            setestDelivery('')
 
-        // clear state
-        setState({
-            driverName: '',
-            route: '',
-            status: '',
-            eta: ''
-        })
+            props.onClose()
+            props.refreshTrucks()
+        });
+
     }
-
+    // need useEffect?
 
     return (
     < Modal show={props.show} onHide={props.onClose} >
@@ -60,15 +65,23 @@ const CreateTruck = (props) => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Route </label>
+                        <label>Vehicle Model: </label>
                         <input type="text"
                             className="form-control"
-                            value={route}
-                            onChange={changeRoute}
+                            value={vehicleModel}
+                            onChange={changeVehicleModel}
                         />
                     </div>
                     <div className="form-group">
-                        <label>Status </label>
+                        <label>License Plate: </label>
+                        <input type="text"
+                            className="form-control"
+                            value={licensePlate}
+                            onChange={changeLicensePlate}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Status: </label>
                         <input type="text"
                             className="form-control"
                             value={status}
@@ -76,31 +89,14 @@ const CreateTruck = (props) => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>ETA </label>
+                        <label>Estimated Delivery: </label>
                         <input type="text"
                             className="form-control"
-                            value={eta}
-                            onChange={changeEta}
+                            value={estDelivery}
+                            onChange={changeEstDelivery}
                         />
                     </div>
                   
-                    <div className="form-group">
-                        <input type="submit" value="Create Truck" className="btn btn-primary" />
-                        <input
-                            type="button" value="List" className="btn btn-danger"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                window.location.href = '/trucks';
-                            }}
-                        /> 
-                        <input
-                            type="button" value="Cancel" className="btn btn-danger"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                window.location.href = '/trucks';
-                            }}
-                        /> 
-                    </div>
                 </form>
             </div>
             
@@ -109,7 +105,7 @@ const CreateTruck = (props) => {
 				<Button variant="secondary" onClick={props.onClose}>
 					Close
 					</Button>
-				<Button variant="primary" onClick={() => console.log('submitted')}>
+				<Button variant="primary" onClick={onSubmit}>
 					Save Changes
 					</Button>
 			</Modal.Footer >

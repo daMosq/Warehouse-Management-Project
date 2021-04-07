@@ -13,7 +13,7 @@ const LoginNavBar = () => (
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="ml-auto">
         {/* <LinkContainer to="/login"> */}
-        <Nav.Link style={{ color: 'white' }} href="/home" onClick={HomePage}>Home</Nav.Link>
+        {/* <Nav.Link style={{ color: 'white' }} href="/home" onClick={HomePage}>Home</Nav.Link> */}
         <Nav.Link style={{ color: 'white' }} href="/" onClick={Logout}>Logout</Nav.Link>
         {/* </LinkContainer> */}
       </Nav>

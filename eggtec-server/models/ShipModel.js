@@ -3,13 +3,14 @@ const Schema = mongoose.Schema
 
 const Shipment = new Schema(
     {
-        orderNumber: {type: Number, required: true},
-        orderDate: {type: Date, required: true},
-        status: {type: String, required: true},
-        date: {type: String, required: true}
+        shipmentID: {type: Number, required: true},
+        clientID: {type: Number, required: true},
+        shipAddress: {type: String, required: true},
+        productPrice: {type: String, required: true},
+        deliveryCost: {type: String, required: true}
     },
     { timestamps: true},
-    {collection: 'shipments'}
+    {collection: 'ships'}
 )
 
-module.exports = mongoose.model('shipments', Shipment)
+module.exports = mongoose.model('ships', Shipment)
